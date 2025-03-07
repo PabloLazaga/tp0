@@ -38,15 +38,8 @@ int main(void)
 	valor = config_get_string_value(config, "CLAVE");
 
 	
-	char* log_config = string_new();
-	string_append(&log_config, ip);
-	string_append(&log_config, ":");
-	string_append(&log_config, puerto);
-	string_append(&log_config, ":");
-	string_append(&log_config, valor);
-
+	log_info(logger, "%s:%s:%s", ip, puerto, valor);
 	
-	log_info(logger, log_config);
 	
 	/* ---------------- LEER DE CONSOLA ---------------- */
 
@@ -90,9 +83,9 @@ void leer_consola(t_log* logger)
 
 	// La primera te la dejo de yapa
 	leido = readline("> ");
-
 	while(strcmp(leido, "\0") != 0){
-		log_info(logger, leido);
+		log_info(logger, leido);\
+		free(leido);
 		leido = readline("> ");
 	}
 
