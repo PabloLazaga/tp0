@@ -3,6 +3,11 @@
 		"debug.onTaskErrors": "abort",
 		"files.associations": {
 			"*.h": "c",
+			"*.tcc": "c",
+			"memory_resource": "c",
+			"memory": "c",
+			"ostream": "c",
+			"streambuf": "c"
 		},
 		"C_Cpp.errorSquiggles": "disabled",
 	},

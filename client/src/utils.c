@@ -1,4 +1,5 @@
 #include "utils.h"
+#include <commons/error.h>
 
 
 void* serializar_paquete(t_paquete* paquete, int bytes)
@@ -20,20 +21,17 @@ int crear_conexion(char *ip, char* puerto)
 {
 	struct addrinfo hints;
 	struct addrinfo *server_info;
-
+	int socket_cliente, err;
+	
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_flags = AI_PASSIVE;
 
-	getaddrinfo(ip, puerto, &hints, &server_info);
+	err = getaddrinfo(ip, puerto, &hints, &server_info);	
+	socket_cliente = socket(server_info->ai_family, server_info->ai_socktype, server_info->ai_protocol);
 
-	// Ahora vamos a crear el socket.
-	int socket_cliente = 0;
-
-	// Ahora que tenemos el socket, vamos a conectarlo
-
-
+	err = connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen);
 	freeaddrinfo(server_info);
 
 	return socket_cliente;
@@ -78,7 +76,6 @@ t_paquete* crear_paquete(void)
 void agregar_a_paquete(t_paquete* paquete, void* valor, int tamanio)
 {
 	paquete->buffer->stream = realloc(paquete->buffer->stream, paquete->buffer->size + tamanio + sizeof(int));
-
 	memcpy(paquete->buffer->stream + paquete->buffer->size, &tamanio, sizeof(int));
 	memcpy(paquete->buffer->stream + paquete->buffer->size + sizeof(int), valor, tamanio);
 
