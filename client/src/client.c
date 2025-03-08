@@ -18,6 +18,7 @@ int main(void)
 	
 	
 	if (!logger){
+		fprintf(stderr, "[[ERROR]] {{logger}: {{no se puedo inicializar}}\n");
 		abort();
 	}
 
@@ -28,7 +29,8 @@ int main(void)
 	config = iniciar_config();
 	
 	
-	if (!config){
+	if (!config){\
+		fprintf(stderr, "[[ERROR]] {{config}: {{no se puedo inicializar}}\n");
 		abort();
 	}
 	
@@ -46,6 +48,8 @@ int main(void)
 
 	/*---------------------------------------------------PARTE 3-------------------------------------------------------------*/
 	conexion = crear_conexion(ip, puerto);
+	
+	
 	enviar_mensaje(clave, conexion);
 	paquete(conexion);
 
@@ -69,7 +73,6 @@ t_config* iniciar_config(void)
 	nuevo_config = config_create("cliente.config");
 	return nuevo_config;
 }
-
 void leer_consola(t_log* logger)
 {
 	char* leido;
