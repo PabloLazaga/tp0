@@ -100,11 +100,16 @@ void paquete(int conexion)
 		free(leido);
 		leido = readline("> ");
 	}
+	
+	if (paquete->buffer->size > 0) {
+		enviar_paquete(paquete, conexion);
+	}	
 
-	enviar_paquete(paquete, conexion);
+	eliminar_paquete(paquete);
+
 	
 	free(leido);
-	eliminar_paquete(paquete);
+	
 }
 
 void terminar_programa(int conexion, t_log* logger, t_config* config)
