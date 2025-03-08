@@ -20,7 +20,6 @@ int main(void)
 	if (!logger){
 		abort();
 	}
-	
 
 	log_info(logger, "Hola! Soy un log");
 
@@ -48,10 +47,8 @@ int main(void)
 	/*---------------------------------------------------PARTE 3-------------------------------------------------------------*/
 	conexion = crear_conexion(ip, puerto);
 	enviar_mensaje(clave, conexion);
-	
-	// Armamos y enviamos el paquete
-	
 	paquete(conexion);
+
 
 	terminar_programa(conexion, logger, config);
 
@@ -106,8 +103,6 @@ void paquete(int conexion)
 	}	
 
 	eliminar_paquete(paquete);
-
-	
 	free(leido);
 	
 }

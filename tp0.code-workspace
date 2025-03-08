@@ -7,7 +7,8 @@
 			"memory_resource": "c",
 			"memory": "c",
 			"ostream": "c",
-			"streambuf": "c"
+			"streambuf": "c",
+			"cerrno": "c"
 		},
 		"C_Cpp.errorSquiggles": "disabled",
 	},

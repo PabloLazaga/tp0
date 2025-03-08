@@ -1,5 +1,5 @@
 #include"utils.h"
-#include <commons/error.h>
+#include <errno.h> 
 
 t_log* logger;
 
@@ -14,13 +14,31 @@ int iniciar_servidor(void)
 	hints.ai_flags = AI_PASSIVE;
 
 	err = getaddrinfo(NULL, PUERTO, &hints, &server_info);
+	if (err != 0) {
+		fprintf(stderr, "[[ERROR]] {{getaddrinfo}}: {{%s}}\n", gai_strerror(err));
+		abort();
+	}	
+	
+	
 	socket_servidor = socket(server_info->ai_family, server_info->ai_socktype ,server_info->ai_protocol);
-	err = bind(socket_servidor, server_info->ai_addr, server_info->ai_addrlen);
-	if (err == -1){
-		error_show("No se pudo hacer bind");
+	if (socket_servidor == -1 ){
+		fprintf(stderr, "[[ERROR]] {{socket}}: {{%s}}\n", strerror(errno));
 		abort();
 	}
-	listen(socket_servidor, SOMAXCONN);
+	
+	
+	err = bind(socket_servidor, server_info->ai_addr, server_info->ai_addrlen);
+	if (err == -1){
+		fprintf(stderr, "[[ERROR]] {{bind}}: {{%s}}\n", strerror(errno));
+		abort();
+	}
+	
+	err = listen(socket_servidor, SOMAXCONN);
+	if (err == -1){
+		fprintf(stderr, "[[ERROR]] {{listen}}: {{%s}}\n", strerror(errno));
+		abort();
+	}
+	
 	freeaddrinfo(server_info);
 	log_trace(logger, "Listo para escuchar a mi cliente");
 
@@ -31,6 +49,10 @@ int esperar_cliente(int socket_servidor)
 {
 	int socket_cliente;
 	socket_cliente = accept(socket_servidor, NULL, NULL);
+	if (socket_cliente == -1){
+		fprintf(stderr, "[[ERROR]] {{accept}}: {{%s}}\n", strerror(errno));
+		abort();
+	}
 	log_info(logger, "Se conecto un cliente!");
 	return socket_cliente;
 }
